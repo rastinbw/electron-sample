@@ -6,9 +6,9 @@ export function isDev(): boolean {
     return process.env.NODE_ENV === 'development'
 }
 
-export function ipcMainHandle<Key extends keyof EventPayloadMaping>(
+export function ipcMainHandle<Key extends keyof EventPayloadMapping>(
     key: Key,
-    handler: () => EventPayloadMaping[Key]
+    handler: () => EventPayloadMapping[Key]
 ) {
     ipcMain.handle(key, (event) => {
         validateEventFrame(event.senderFrame)
@@ -16,16 +16,26 @@ export function ipcMainHandle<Key extends keyof EventPayloadMaping>(
     })
 }
 
-export function ipcWebContentSend<Key extends keyof EventPayloadMaping>(
+export function ipcMainOn<Key extends keyof EventPayloadMapping>(
+    key: Key,
+    handler: (payload: EventPayloadMapping[Key]) => void
+) {
+    ipcMain.on(key, (event, payload) => {
+        validateEventFrame(event.senderFrame);
+        return handler(payload);
+    });
+}
+
+export function ipcWebContentSend<Key extends keyof EventPayloadMapping>(
     key: Key,
     webContents: WebContents,
-    payload: EventPayloadMaping[Key]
+    payload: EventPayloadMapping[Key]
 ) {
     webContents.send(key, payload)
 }
 
 export function validateEventFrame(frame: WebFrameMain | null) {
-    if (frame == null){
+    if (frame == null) {
         throw new Error('NULL Frame')
     }
 

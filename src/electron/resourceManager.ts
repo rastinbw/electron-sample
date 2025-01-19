@@ -20,7 +20,6 @@ export function pollResources(mainWindow: BrowserWindow) {
     }, POLLING_INTERVAL)
 }
 
-
 export function getStaticData() {
     const totalStorage = getStorageDate().total
     const cpuModel = os.cpus()[0].model

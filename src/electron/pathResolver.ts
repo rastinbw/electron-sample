@@ -2,7 +2,7 @@ import path from "path";
 import { app } from "electron";
 import { isDev } from "./util.js";
 
-export function getPreloadPath(){
+export function getPreloadPath() {
     return path.join(
         app.getAppPath(),
         isDev() ? '.' : '..',
@@ -10,6 +10,10 @@ export function getPreloadPath(){
     )
 }
 
-export function getUIPath(): string{
+export function getUIPath(): string {
     return path.join(app.getAppPath(), '/dist-react/index.html')
+}
+
+export function getAssetPath() {
+    return path.join(app.getAppPath(), isDev() ? '.' : '..', '/src/assets');
 }
